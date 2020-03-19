@@ -1,7 +1,7 @@
 from App.extensions import db
 
 
-class base:
+class baseModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     __extract__ = True

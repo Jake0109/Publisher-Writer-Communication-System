@@ -14,6 +14,8 @@ class baseConfig:
     DEBBUG = False
     TESTING = False
 
+    CACHE_TYPE = 'simple'
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
