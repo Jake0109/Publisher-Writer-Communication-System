@@ -14,7 +14,7 @@ class baseConfig:
     DEBUG = False
     TESTING = False
 
-    CACHE_TYPE = 'simple'
+    SECRET_KEY = "JAKE"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -22,11 +22,15 @@ class baseConfig:
 class developConfig(baseConfig):
     DEBUG = True
 
+    CACHE_TYPE = 'simple'
+
     SQLALCHEMY_DATABASE_URI = "sqlite:///D:/Publisher-Writer-Communication-System/database/test.db"
 
 
 class testingConfig(baseConfig):
     DEBUG = True
+
+    CACHE_TYPE = 'redis'
 
     dbinfo = {
         "engine": "mysql",

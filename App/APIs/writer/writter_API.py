@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource, marshal, fields
 
-from App.Models.writer.writer_user_models import Writer
+from App.Models.writer.writer_models import Writer
 
 writerFields = {
     "name": fields.String,
