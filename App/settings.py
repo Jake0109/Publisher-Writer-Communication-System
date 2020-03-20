@@ -11,7 +11,7 @@ def generate_dburi(dbinfo):
 
 
 class baseConfig:
-    DEBBUG = False
+    DEBUG = False
     TESTING = False
 
     CACHE_TYPE = 'simple'
@@ -20,22 +20,22 @@ class baseConfig:
 
 
 class developConfig(baseConfig):
-    DEBBUG = True
+    DEBUG = True
 
-    SQLALCHEMY_DATABASE_URI = "sqlite:////database/sqlite.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///D:/Publisher-Writer-Communication-System/database/test.db"
 
 
 class testingConfig(baseConfig):
-    DEBBUG = True
+    DEBUG = True
 
     dbinfo = {
         "engine": "mysql",
         "driver": "pymysql",
-        "user": "user",
-        "password": "password",
+        "user": "root",
+        "password": "jake0109",
         "host": "host",
         "port": 3306,
-        "database": "database",
+        "database": "flask",
     }
 
     SQLALCHEMY_DATABASE_URI = generate_dburi(dbinfo)
