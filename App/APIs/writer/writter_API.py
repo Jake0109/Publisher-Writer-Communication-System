@@ -1,5 +1,5 @@
 from flask import request
-from flask_restful import Resource, marshal, fields
+from flask_restful import Resource, marshal, fields, marshal_with
 
 from App.Models.writer.writer_models import Writer
 
@@ -9,12 +9,23 @@ writerFields = {
     "mail": fields.String,
 }
 
+multiWriterFields = {
+    "status": fields.Integer,
+    "msg": fields.String,
+    "data": fields.Nested(writerFields)
+}
+
 
 class writerResource(Resource):
+    @marshal_with(multiWriterFields)
     def get(self):
+        writers = Writer.query.all()
+        print(writers)
+        print(type(writers))
         data = {
             "msg": "user list fetched",
             "status": 200,
+            "data": writers
         }
 
         return data
@@ -27,11 +38,12 @@ class writerResource(Resource):
         writer.mail = request.form.get("mail")
         writer.tel = request.form.get("tel")
 
+
         writer.save()
 
         data = {
             "msg": "successfully post",
             "status": 201,
-            "data": None,
+            "data": marshal(writer, writerFields),
         }
         return data
