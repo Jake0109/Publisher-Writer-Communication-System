@@ -1,6 +1,5 @@
 import uuid
-
-from flask import request
+from flask import request, g
 from flask_restful import Resource, marshal, fields, marshal_with, abort
 
 from App.APIs.writer.utils import get_writer, writer_login_required
@@ -23,15 +22,13 @@ multiWriterFields = {
 class writerResource(Resource):
     @marshal_with(multiWriterFields)
     def get(self):
-        writers = Writer.query.all()
-        print(writers)
-        print(type(writers))
+        writer_id = request.args.get(id)
+        writer = get_writer(writer_id)
         data = {
-            "msg": "user list fetched",
             "status": 200,
-            "data": writers
+            "msg": "successfully get",
+            "data": marshal(writer, writerFields)
         }
-
         return data
 
     def post(self):
@@ -82,5 +79,33 @@ class writerResource(Resource):
 
     @writer_login_required
     def patch(self):
+        writer = g.writer
+        writer.mail = request.form.get("mail") or writer.mail
+        writer.tel = request.form.get("tel") or writer.tel
+
+        if not writer.save():
+            abort(400, msg="patch failed")
+
+        data = {
+            "msg": "successfully patched",
+            "status": 200,
+            "data": marshal(writer, writerFields)
+        }
+
+        return data
+
+    # @admin_login_required
+    def delete(self):
         pass
-        return {"msg": "patch ok"}
+
+
+class writersResource(Resource):
+    def get(self):
+        writers = Writer.query.filter(Writer.is_deleted == False).all()
+        data = {
+            "msg": "writer list fetched",
+            "status": 200,
+            "data": writers
+        }
+
+        return data

@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, g
 from flask_restful import abort
 
 from App.Models.writer.writer_models import Writer
@@ -38,6 +38,8 @@ def writer_login_required(func):
         writer_id = cache.get(token)
         if not writer_id:
             abort(400, msg="invalid token")
+
+        g.writer = Writer.query.get(writer_id)
 
         return func(*args, **kwargs)
     return wrapper

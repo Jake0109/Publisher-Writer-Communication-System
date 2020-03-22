@@ -5,11 +5,11 @@ from App.extensions import db
 
 
 class Writer(baseModel):
-    name = db.Column(db.String(32), nullable=False)
+    name = db.Column(db.String(32), nullable=False, unique=True)
     _password = db.Column(db.String(64), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
-    tel = db.Column(db.String(32), nullable=False)
-    mail = db.Column(db.String(64), nullable=False)
+    tel = db.Column(db.String(32), nullable=False, unique=True)
+    mail = db.Column(db.String(64), nullable=False, unique=True)
 
     @property
     def password(self):
