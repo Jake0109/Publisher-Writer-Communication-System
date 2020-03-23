@@ -9,6 +9,7 @@ class Publisher(baseModel):
     identifier = db.Column(db.String(256), nullable=False, unique=True)
     tel = db.Column(db.String(128), nullable=False, unique=True)
     address = db.Column(db.String(256), nullable=False)
+    mail = db.Column(db.String(128), nullable=True, unique=True)
     _password = db.Column(db.String(128), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
 

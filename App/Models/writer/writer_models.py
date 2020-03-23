@@ -5,7 +5,8 @@ from App.extensions import db
 
 
 class Writer(baseModel):
-    name = db.Column(db.String(32), nullable=False, unique=True)
+    username = db.Column(db.String, nullable=True, unique=True)
+    name = db.Column(db.String(32), nullable=False)
     _password = db.Column(db.String(64), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
     tel = db.Column(db.String(32), nullable=False, unique=True)
