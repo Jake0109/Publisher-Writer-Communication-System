@@ -49,3 +49,5 @@ envs = {
     "testing": testingConfig,
     "default": developConfig,
 }
+
+SUPER_ADMINS = ["admin", "jake"]

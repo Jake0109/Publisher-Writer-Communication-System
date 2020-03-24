@@ -8,6 +8,8 @@ class topicResource(Resource):
     def post(self):
         pass
 
+    def delete(self):
+        pass
 
 class topicsResource(Resource):
     def get(self):

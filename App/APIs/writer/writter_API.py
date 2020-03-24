@@ -7,6 +7,7 @@ from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
 writerFields = {
+    "username": fields.String,
     "name": fields.String,
     "tel": fields.String,
     "mail": fields.String,

@@ -5,6 +5,7 @@ from App.extensions import db
 
 
 class Publisher(baseModel):
+    username = db.Column(db.String(128), nullable=False, unique=True)
     name = db.Column(db.String(128), nullable=False, unique=True)
     identifier = db.Column(db.String(256), nullable=False, unique=True)
     tel = db.Column(db.String(128), nullable=False, unique=True)

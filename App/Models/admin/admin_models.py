@@ -5,7 +5,7 @@ from App.extensions import db
 
 
 class Admin(baseModel):
-    name = db.Column(db.String(64), nullable=True, unique=True)
+    username = db.Column(db.String(64), nullable=True, unique=True)
     _password = db.Column(db.String(128), nullable=True)
     is_super = db.Column(db.Boolean, default=False)
     is_deleted = db.Column(db.Boolean, default=False)

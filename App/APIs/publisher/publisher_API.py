@@ -9,6 +9,7 @@ from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
 publisherFields = {
+    "username": fields.String,
     "name": fields.String,
     "identifier": fields.String,
     "tel": fields.String,
