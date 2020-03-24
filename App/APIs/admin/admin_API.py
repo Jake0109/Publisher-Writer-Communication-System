@@ -3,7 +3,7 @@ import uuid
 from flask import request
 from flask_restful import Resource, abort, fields, marshal, marshal_with
 
-from App.APIs.utils import admin_login_required
+from App.APIs.utils import admin_login_required, super_admin_required
 from App.Models.admin.admin_models import Admin
 from App.extensions import cache
 from App.settings import SUPER_ADMINS
@@ -105,7 +105,7 @@ class adminResource(Resource):
 
         return data
 
-    # @super_admin_required
+    @super_admin_required
     def delete(self):
         admin_id = request.args.get("id")
         admin = Admin.query.get(admin_id)
@@ -118,7 +118,7 @@ class adminResource(Resource):
         return {"msg": "successfully deleted", "status": 200}
 
 class AdminsResource(Resource):
-    # @super_admin_required
+    @super_admin_required
     @marshal_with(multiAdminFields)
     def get(self):
         admins = Admin.query.all()

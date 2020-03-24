@@ -49,7 +49,28 @@ def writer_login_required(func):
     return wrapper
 
 
+# publisher utils
+
+def publisher_login_required(func):
+    def wrapper(*args, **kwargs):
+        token = request.args.get("token")
+
+        if not token:
+            abort(400, msg="not login")
+
+        writer_id = cache.get(token)
+        if not writer_id or not token.startwith('publisher'):
+            abort(400, msg="invalid token")
+
+        g.writer = Writer.query.get(writer_id)
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 # admin utils
+
 def admin_login_required(func):
     def wrapper(*args, **kwargs):
         token = request.args.get("token")
@@ -62,6 +83,28 @@ def admin_login_required(func):
             abort(400, msg="invalid token")
 
         g.admin = Admin.query.get(admin_id)
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def super_admin_required(func):
+    def wrapper(*args, **kwargs):
+        token = request.args.get("token")
+
+        if not token:
+            abort(400, msg="not login")
+
+        admin_id = cache.get(token)
+        if not admin_id or not token.startwith('admin'):
+            abort(400, msg="invalid token")
+
+        admin = Admin.query.get(admin_id)
+        if not admin.is_super:
+            abort(403, msg="invalid admin user")
+
+        g.admin = admin
 
         return func(*args, **kwargs)
 
