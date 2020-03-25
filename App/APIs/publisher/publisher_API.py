@@ -5,6 +5,7 @@ from flask_restful import Resource, marshal, fields, abort, marshal_with
 
 from App.APIs.utils import admin_login_required, publisher_login_required
 from App.Models.publisher.publisher_models import Publisher
+from App.Models.publisher.publisher_tag_models import Publisher_Tag
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
@@ -125,7 +126,31 @@ class publisherResource(Resource):
 class publishersResource(Resource):
     @marshal_with(multiPublisherFields)
     def get(self):
-        # not include tags
+        tag_id = request.form.get("tag_id") or None
+        if tag_id:
+            relations = Publisher_Tag.query.filter(Publisher_Tag.tag_id == tag_id).all()
 
-        publishers = Publisher.query.filter(Publisher.is_deleted == False).all()
-        return publishers
+            if not relations:
+                abort(400, msg="publisher-tag relationship not found")
+
+            publisher_ids = [relation.publisher_id for relation in relations]
+            publishers = [Publisher.query.get(publisher_id) for publisher_id in publisher_ids]
+
+            data = {
+                "msg": "publishers of certain tag successfully got",
+                "status": 200,
+                "data": publishers,
+            }
+
+            return data
+
+        else:
+            publishers = Publisher.query.filter(Publisher.is_deleted is False).all()
+
+            data = {
+                "msg": "publishers of certain tag successfully got",
+                "status": 200,
+                "data": publishers,
+            }
+
+            return data

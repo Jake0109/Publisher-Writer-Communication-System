@@ -1,3 +1,6 @@
+import os
+
+
 def generate_dburi(dbinfo):
     engine = dbinfo.get("engine")
     driver = dbinfo.get("driver")
@@ -51,3 +54,4 @@ envs = {
 }
 
 SUPER_ADMINS = ["admin", "jake"]
+
