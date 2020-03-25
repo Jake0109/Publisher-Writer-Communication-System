@@ -1,14 +1,14 @@
 from sqlalchemy import ForeignKey
 
 from App.Models import baseModel
-from App.Models.admin.admin_models import Admin
+from App.Models.publisher.publisher_models import Publisher
 from App.Models.writer.writer_models import Writer
 from App.extensions import db
 
 
 class Topic(baseModel):
     name = db.Column(db.String(256), nullable=False)
-    publisher_id = db.Column(db.Integer, ForeignKey(Admin.id))
+    publisher_id = db.Column(db.Integer, ForeignKey(Publisher.id))
     writer_id = db.Column(db.Integer, ForeignKey(Writer.id))
     date = db.Column(db.DateTime)
     is_deleted = db.Column(db.Boolean, default=False)

@@ -45,6 +45,7 @@ class writerResource(Resource):
         if action == "register":
             writer = Writer()
             writer.name = request.form.get("name")
+            writer.username = request.form.get("username")
             writer.password = request.form.get("password")
             writer.mail = request.form.get("mail")
             writer.tel = request.form.get("tel")

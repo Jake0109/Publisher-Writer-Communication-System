@@ -2,6 +2,7 @@ from flask import request, g
 from flask_restful import abort
 
 from App.Models.admin.admin_models import Admin
+from App.Models.publisher.publisher_models import Publisher
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
@@ -39,7 +40,7 @@ def writer_login_required(func):
             abort(400, msg="not login")
 
         writer_id = cache.get(token)
-        if not writer_id or not token.startwith('writer'):
+        if not writer_id or not token.startswith('writer'):
             abort(400, msg="invalid token")
 
         g.writer = Writer.query.get(writer_id)
@@ -58,11 +59,12 @@ def publisher_login_required(func):
         if not token:
             abort(400, msg="not login")
 
-        writer_id = cache.get(token)
-        if not writer_id or not token.startwith('publisher'):
+        publisher_id = cache.get(token)
+
+        if not publisher_id or not token.startswith("publisher"):
             abort(400, msg="invalid token")
 
-        g.writer = Writer.query.get(writer_id)
+        g.publisher = Publisher.query.get(publisher_id)
 
         return func(*args, **kwargs)
 
@@ -79,7 +81,7 @@ def admin_login_required(func):
             abort(400, msg="not login")
 
         admin_id = cache.get(token)
-        if not admin_id or not token.startwith('admin'):
+        if not admin_id or not token.startwith("admin"):
             abort(400, msg="invalid token")
 
         g.admin = Admin.query.get(admin_id)
@@ -97,7 +99,7 @@ def super_admin_required(func):
             abort(400, msg="not login")
 
         admin_id = cache.get(token)
-        if not admin_id or not token.startwith('admin'):
+        if not admin_id or not token.startswith('admin'):
             abort(400, msg="invalid token")
 
         admin = Admin.query.get(admin_id)

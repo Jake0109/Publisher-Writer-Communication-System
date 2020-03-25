@@ -1,6 +1,6 @@
 import uuid
 
-from flask import request
+from flask import request, g
 from flask_restful import Resource, marshal, fields, abort, marshal_with
 
 from App.APIs.utils import admin_login_required, publisher_login_required
@@ -25,9 +25,11 @@ multiPublisherFields = {
 
 class publisherResource(Resource):
     def get(self):
-        publisher_id = request.args.get("writer_id")
-        publisher = Publisher.query.filter(Writer.is_deleted == False).get(publisher_id)
+        publisher_id = request.args.get("id")
+        publisher = Publisher.query.filter(Writer.is_deleted is False).get(publisher_id)
 
+        print(publisher)
+        print(type(publisher))
         if not publisher:
             abort(404, msg="invalid publisher's id")
         data = {
@@ -44,6 +46,7 @@ class publisherResource(Resource):
         if action == "register":
             publisher = Publisher()
             publisher.username = request.form.get("username")
+            publisher.password = request.form.get("password")
             publisher.name = request.form.get("name")
             publisher.identifier = request.form.get("identifier")
             publisher.tel = request.form.get("name")
@@ -65,7 +68,7 @@ class publisherResource(Resource):
             username = request.form.get("username")
             password = request.form.get("password")
 
-            publisher = Publisher.qeury.filter(Publisher.username == username).first()
+            publisher = Publisher.query.filter(Publisher.username == username).first()
 
             if not publisher or publisher.is_deleted:
                 abort(404, msg="publisher does not exist")
@@ -76,6 +79,7 @@ class publisherResource(Resource):
             token = "publisher" + uuid.uuid4().hex
 
             cache.set(token, publisher.id, timeout=60 * 60 * 24 * 7)
+            id = cache.get(token)
 
             data = {
                 "status": 200,
@@ -88,8 +92,7 @@ class publisherResource(Resource):
 
     @publisher_login_required
     def patch(self):
-        publisher_id = request.args.get("id")
-        publisher = Publisher.query.get(Publisher.id == publisher_id)
+        publisher = g.publisher
         publisher.identifier = request.form.get("identifier") or publisher.identifier
         publisher.tel = request.form.get("name") or publisher.tel
         publisher.mail = request.form.get("mail") or publisher.mail

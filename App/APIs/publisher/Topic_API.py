@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, g
 from flask_restful import Resource, marshal, fields, abort, marshal_with
 
 from App.APIs.utils import admin_login_required, publisher_login_required
@@ -34,8 +34,9 @@ class topicResource(Resource):
     @publisher_login_required
     def post(self):
         topic = Topic()
+        topic.publisher_id = g.publisher.id
+
         topic.writer_id = request.form.get("writer_id")
-        topic.publisher_id = request.form.get("publisher_id")
         topic.name = request.form.get("name")
 
         if not topic.save():
@@ -44,7 +45,7 @@ class topicResource(Resource):
         data = {
             "msg": "topic successfully created",
             "status": 203,
-            "data": marshal(topic),
+            "data": marshal(topic, topicField),
         }
 
         return data
