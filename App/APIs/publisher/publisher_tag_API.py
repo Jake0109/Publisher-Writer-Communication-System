@@ -1,22 +1,11 @@
 from flask import g, request
 from flask_restful import Resource, abort, fields, marshal, marshal_with
 
-from App.APIs.utils import publisher_login_required
+from App.APIs.utils import publisher_login_required, relationFields, multiRelationsFields
 from App.Models.admin.tag_models import Tag
 from App.Models.publisher.publisher_models import Publisher
 from App.Models.publisher.publisher_tag_models import Publisher_Tag
 
-
-relationFields = {
-    "publisher_id": fields.Integer,
-    "tag_id": fields.Integer,
-}
-
-multiRelationsFields = {
-    "msg": fields.String,
-    "status": fields.Integer,
-    "data": fields.List(fields.Nested(relationFields))
-}
 
 class pubTagRelationResource(Resource):
     @publisher_login_required

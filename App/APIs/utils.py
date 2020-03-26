@@ -1,5 +1,5 @@
 from flask import request, g
-from flask_restful import abort
+from flask_restful import abort, fields
 
 from App.Models.admin.admin_models import Admin
 from App.Models.publisher.publisher_models import Publisher
@@ -111,3 +111,99 @@ def super_admin_required(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+# Fields
+# Contract
+contractFields = {
+    "name": fields.String,
+    "topic_id": fields.String(attribute="t_id"),
+    "contract_file": fields.String,
+    "is_signed": fields.Boolean,
+    "is_completed": fields.Boolean,
+}
+
+multiContractFields = {
+    "msg": fields.String,
+    "status": fields.Integer,
+    "data": fields.List(fields.Nested(contractFields))
+}
+
+# Admin
+adminFields = {
+    "username": fields.String,
+    "password": fields.String(attribute="_password"),
+}
+
+multiAdminFields = {
+    "msg": fields.String,
+    "status": fields.Integer,
+    "data": fields.List(fields.Nested(adminFields))
+}
+
+# Tag
+tagFields = {
+    "id": fields.Integer,
+    "name": fields.String
+}
+
+multiTagFields = {
+    "msg": fields.String,
+    "status": fields.Integer,
+    "data": fields.List(fields.Nested(tagFields))
+}
+
+# Publisher
+publisherFields = {
+    "username": fields.String,
+    "name": fields.String,
+    "identifier": fields.String,
+    "tel": fields.String,
+    "address": fields.String,
+}
+
+multiPublisherFields = {
+    "status": fields.Integer,
+    "msg": fields.String,
+    "data": fields.List(fields.Nested(publisherFields))
+}
+
+# Publisher-Tag Relation
+relationFields = {
+    "publisher_id": fields.Integer,
+    "tag_id": fields.Integer,
+}
+
+multiRelationsFields = {
+    "msg": fields.String,
+    "status": fields.Integer,
+    "data": fields.List(fields.Nested(relationFields))
+}
+
+# Topic
+topicField = {
+    "name": fields.String,
+    "writer_id": fields.Integer,
+    "publisher_id": fields.Integer,
+    "is_approved": fields.Boolean,
+    "is_completed": fields.Boolean,
+}
+
+multiTopicFields = {
+    "msg": fields.String,
+    "status": fields.Integer,
+    "data": fields.List(fields.Nested(topicField))
+}
+
+# Writer
+writerFields = {
+    "username": fields.String,
+    "name": fields.String,
+    "tel": fields.String,
+    "mail": fields.String,
+}
+
+multiWriterFields = {
+    "status": fields.Integer,
+    "msg": fields.String,
+    "data": fields.Nested(writerFields)
+}

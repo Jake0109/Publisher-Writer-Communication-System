@@ -2,26 +2,13 @@ import uuid
 from flask import request, g
 from flask_restful import Resource, marshal, fields, marshal_with, abort
 
-from App.APIs.utils import get_writer_with_ident, writer_login_required, admin_login_required
+from App.APIs.utils import get_writer_with_ident, writer_login_required, admin_login_required, multiWriterFields, \
+    writerFields
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
-writerFields = {
-    "username": fields.String,
-    "name": fields.String,
-    "tel": fields.String,
-    "mail": fields.String,
-}
-
-multiWriterFields = {
-    "status": fields.Integer,
-    "msg": fields.String,
-    "data": fields.Nested(writerFields)
-}
-
 
 class writerResource(Resource):
-    @marshal_with(multiWriterFields)
     def get(self):
         writer_id = request.args.get(id)
 
@@ -112,6 +99,7 @@ class writerResource(Resource):
 
 
 class writersResource(Resource):
+    marshal_with(multiWriterFields)
     def get(self):
         writers = Writer.query.filter(Writer.is_deleted == False).all()
         data = {

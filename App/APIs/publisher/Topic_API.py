@@ -1,22 +1,9 @@
 from flask import request, g
 from flask_restful import Resource, marshal, fields, abort, marshal_with
 
-from App.APIs.utils import admin_login_required, publisher_login_required
+from App.APIs.utils import admin_login_required, publisher_login_required, topicField, multiTopicFields
 from App.Models.publisher.topic_models import Topic
 
-topicField = {
-    "name": fields.String,
-    "writer_id": fields.Integer,
-    "publisher_id": fields.Integer,
-    "is_approved": fields.Boolean,
-    "is_completed": fields.Boolean,
-}
-
-multiTopicFields = {
-    "msg": fields.String,
-    "status": fields.Integer,
-    "data": fields.List(fields.Nested(topicField))
-}
 
 class topicResource(Resource):
     def get(self):

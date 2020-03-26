@@ -1,20 +1,9 @@
 from flask import request
 from flask_restful import Resource, abort, fields, marshal, marshal_with
 
-from App.APIs.utils import admin_login_required
+from App.APIs.utils import admin_login_required, tagFields, multiTagFields
 from App.Models.admin.tag_models import Tag
 from App.Models.publisher.publisher_tag_models import Publisher_Tag
-
-tagFields = {
-    "id": fields.Integer,
-    "name": fields.String
-}
-
-multiTagFields = {
-    "msg": fields.String,
-    "status": fields.Integer,
-    "data": fields.List(fields.Nested(tagFields))
-}
 
 
 class tagResource(Resource):

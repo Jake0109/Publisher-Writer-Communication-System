@@ -1,5 +1,6 @@
 from flask_restful import Api
 
+from App.APIs.publisher.PublisherContracts_API import PubContractResource, PubContractsResource
 from App.APIs.publisher.Topic_API import topicResource, topicsResource
 from App.APIs.publisher.publisher_API import publisherResource, publishersResource
 from App.APIs.publisher.publisher_tag_API import pubTagRelationResource, pubTagRelationsResource
@@ -14,3 +15,6 @@ publisher_api.add_resource(topicsResource, '/topics/')
 
 publisher_api.add_resource(pubTagRelationResource, '/pub_tag_relation/')
 publisher_api.add_resource(pubTagRelationsResource, '/pub_tag_relations/')
+
+publisher_api.add_resource(PubContractResource, '/contract/')
+publisher_api.add_resource(PubContractsResource, '/contracts/')

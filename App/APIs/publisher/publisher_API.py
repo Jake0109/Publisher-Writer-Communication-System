@@ -3,25 +3,11 @@ import uuid
 from flask import request, g
 from flask_restful import Resource, marshal, fields, abort, marshal_with
 
-from App.APIs.utils import admin_login_required, publisher_login_required
+from App.APIs.utils import admin_login_required, publisher_login_required, publisherFields, multiPublisherFields
 from App.Models.publisher.publisher_models import Publisher
 from App.Models.publisher.publisher_tag_models import Publisher_Tag
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
-
-publisherFields = {
-    "username": fields.String,
-    "name": fields.String,
-    "identifier": fields.String,
-    "tel": fields.String,
-    "address": fields.String,
-}
-
-multiPublisherFields = {
-    "status": fields.Integer,
-    "msg": fields.String,
-    "data": fields.List(fields.Nested(publisherFields))
-}
 
 
 class publisherResource(Resource):

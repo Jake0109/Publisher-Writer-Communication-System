@@ -1,23 +1,12 @@
 import uuid
 
-from flask import request
+from flask import request, g
 from flask_restful import Resource, abort, fields, marshal, marshal_with
 
-from App.APIs.utils import admin_login_required, super_admin_required
+from App.APIs.utils import admin_login_required, super_admin_required, adminFields, multiAdminFields
 from App.Models.admin.admin_models import Admin
 from App.extensions import cache
 from App.settings import SUPER_ADMINS
-
-adminFields = {
-    "username": fields.String,
-    "password": fields.String(attribute="_password"),
-}
-
-multiAdminFields = {
-    "msg": fields.String,
-    "status": fields.Integer,
-    "data": fields.List(fields.Nested(adminFields))
-}
 
 
 class adminResource(Resource):
