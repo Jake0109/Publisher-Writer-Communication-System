@@ -1,5 +1,5 @@
 from flask import request
-from flask_restful import Resource, abort, marshal, fields, marshal_with
+from flask_restful import Resource, abort, marshal, marshal_with
 
 from App.APIs.utils import admin_login_required, contractFields, multiContractFields
 from App.Models.admin.contract_models import Contract

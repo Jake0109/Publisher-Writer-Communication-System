@@ -1,6 +1,6 @@
 import uuid
 from flask import request, g
-from flask_restful import Resource, marshal, fields, marshal_with, abort
+from flask_restful import Resource, marshal, marshal_with, abort
 
 from App.APIs.utils import get_writer_with_ident, writer_login_required, admin_login_required, multiWriterFields, \
     writerFields
@@ -60,7 +60,7 @@ class writerResource(Resource):
             if not writer.check_password(password):
                 abort(400, msg="wrong username or password")
 
-            token = "writer"+uuid.uuid4().hex
+            token = "writer" + uuid.uuid4().hex
             cache.set(token, writer.id, timeout=60 * 60 * 24 * 7)
 
             data = {
@@ -100,6 +100,7 @@ class writerResource(Resource):
 
 class writersResource(Resource):
     marshal_with(multiWriterFields)
+
     def get(self):
         writers = Writer.query.filter(Writer.is_deleted == False).all()
         data = {

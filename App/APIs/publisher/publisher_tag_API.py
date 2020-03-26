@@ -1,5 +1,5 @@
 from flask import g, request
-from flask_restful import Resource, abort, fields, marshal, marshal_with
+from flask_restful import Resource, abort, marshal, marshal_with
 
 from App.APIs.utils import publisher_login_required, relationFields, multiRelationsFields
 from App.Models.admin.tag_models import Tag

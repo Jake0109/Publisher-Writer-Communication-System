@@ -1,7 +1,7 @@
 import uuid
 
 from flask import request, g
-from flask_restful import Resource, marshal, fields, abort, marshal_with
+from flask_restful import Resource, marshal, abort, marshal_with
 
 from App.APIs.utils import admin_login_required, publisher_login_required, publisherFields, multiPublisherFields
 from App.Models.publisher.publisher_models import Publisher
