@@ -116,7 +116,8 @@ def super_admin_required(func):
 # Contract
 contractFields = {
     "name": fields.String,
-    "topic_id": fields.String(attribute="t_id"),
+    "publisher_id": fields.Integer,
+    "writer_id": fields.Integer,
     "contract_file": fields.String,
     "is_signed": fields.Boolean,
     "is_completed": fields.Boolean,
