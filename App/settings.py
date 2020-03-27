@@ -1,7 +1,7 @@
 import os
 
 
-def generate_dburi(dbinfo):
+def generate_db_uri(dbinfo):
     engine = dbinfo.get("engine")
     driver = dbinfo.get("driver")
     user = dbinfo.get("user")
@@ -45,7 +45,7 @@ class testingConfig(baseConfig):
         "database": "flask",
     }
 
-    SQLALCHEMY_DATABASE_URI = generate_dburi(dbinfo)
+    SQLALCHEMY_DATABASE_URI = generate_db_uri(dbinfo)
 
 envs = {
     "development": developConfig,
@@ -53,5 +53,10 @@ envs = {
     "default": developConfig,
 }
 
+BASE_DIR = os.path.dirname(__file__)
+
 SUPER_ADMINS = ["admin", "jake"]
 
+UPLOAD_DIR = os.path.join(BASE_DIR, "static/uploads/")
+
+print(UPLOAD_DIR)

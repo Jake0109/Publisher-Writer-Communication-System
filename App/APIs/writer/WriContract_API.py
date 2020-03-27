@@ -7,9 +7,8 @@ from App.Models.admin.contract_models import Contract
 
 class WriContractResource(Resource):
     @writer_login_required
-    def get(self):
-        id = request.args.get("contract_id")
-        contract = Contract.query.get(id)
+    def get(self, contract_id):
+        contract = Contract.query.get(contract_id)
 
         if not contract:
             abort(404, msg="contract not found.")
@@ -26,9 +25,8 @@ class WriContractResource(Resource):
         return data
 
     @writer_login_required
-    def patch(self):
-        id = request.args.get("contract_id")
-        contract = Contract.query.get(id)
+    def patch(self, contract_id):
+        contract = Contract.query.get(contract_id)
 
         if not contract:
             abort(404, msg="contract not found.")

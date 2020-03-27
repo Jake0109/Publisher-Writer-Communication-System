@@ -1,32 +1,35 @@
 from flask import request
-from flask_restful import Resource, abort, fields, marshal, marshal_with
+from flask_restful import Resource, abort, marshal, marshal_with, reqparse
 
 from App.APIs.utils import admin_login_required, tagFields, multiTagFields
 from App.Models.admin.tag_models import Tag
 from App.Models.publisher.publisher_tag_models import Publisher_Tag
 
+parse = reqparse.RequestParser()
+parse.add_argument("name", required=True, help="please supply name")
 
 class tagResource(Resource):
     @admin_login_required
     def post(self):
         tag = Tag()
-        tag.name = request.form.get("name")
+        args = parse.parse_args()
+
+        tag.name = args.get("name")
 
         if not tag.save():
             abort(400, msg="fail to save tag")
 
         data = {
             "msg": "tag successfully created",
-            "status": 200,
+            "status": 201,
             "data": marshal(tag, tagFields)
         }
 
         return data
 
     @admin_login_required
-    def delete(self):
-        id = request.form.get("tag_id")
-        tag = Tag.query.get(id)
+    def delete(self, tag_id):
+        tag = Tag.query.get(tag_id)
 
         if not tag.delete():
             abort(400, msg="fail to delete tag")

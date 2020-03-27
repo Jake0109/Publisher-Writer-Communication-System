@@ -8,8 +8,8 @@ admin_api = Api(prefix='/admin/')
 
 admin_api.add_resource(adminResource, '/admin/')
 
-admin_api.add_resource(contractResource, '/contract/')
-admin_api.add_resource(contractsResource, '/contracts')
+admin_api.add_resource(contractResource, '/contract/<int:contract_id>/')
+admin_api.add_resource(contractsResource, '/contracts/')
 
-admin_api.add_resource(tagResource, '/tag/')
+admin_api.add_resource(tagResource, '/tag/<int:tag_id>/')
 admin_api.add_resource(tagsResource, '/tags/')

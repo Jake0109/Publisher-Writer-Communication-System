@@ -6,7 +6,7 @@ from App.Models.publisher.publisher_models import Publisher
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
-
+# login_required decorators
 # writer utils
 
 def get_writer_with_ident(ident):
@@ -172,12 +172,6 @@ multiPublisherFields = {
 relationFields = {
     "publisher_id": fields.Integer,
     "tag_id": fields.Integer,
-}
-
-multiRelationsFields = {
-    "msg": fields.String,
-    "status": fields.Integer,
-    "data": fields.List(fields.Nested(relationFields))
 }
 
 # Topic

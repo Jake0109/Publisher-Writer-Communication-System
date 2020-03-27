@@ -1,22 +1,31 @@
 import uuid
 
 from flask import request, g
-from flask_restful import Resource, marshal, abort, marshal_with
+from flask_restful import Resource, marshal, abort, marshal_with, reqparse
+from werkzeug.datastructures import FileStorage
 
 from App.APIs.utils import admin_login_required, publisher_login_required, publisherFields, multiPublisherFields
 from App.Models.publisher.publisher_models import Publisher
 from App.Models.publisher.publisher_tag_models import Publisher_Tag
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
+from App.settings import UPLOAD_DIR
 
+parse = reqparse.RequestParser()
+parse.add_argument("username", required=True, help="please supply username")
+parse.add_argument("password", required=True, help="please supply password")
+
+register_parse = parse.copy()
+register_parse.add_argument("name", required=True, help="please supply name")
+register_parse.add_argument("identifier", required=True, type=FileStorage, help="please supply identifier")
+register_parse.add_argument("tel", required=True, help="please supply telephone number")
+register_parse.add_argument("mail", required=True, help="please supply mail")
+register_parse.add_argument("address", required=True, help="please supply address")
 
 class publisherResource(Resource):
-    def get(self):
-        publisher_id = request.args.get("id")
+    def get(self, publisher_id):
         publisher = Publisher.query.filter(Writer.is_deleted is False).get(publisher_id)
 
-        print(publisher)
-        print(type(publisher))
         if not publisher:
             abort(404, msg="invalid publisher's id")
         data = {
@@ -31,14 +40,22 @@ class publisherResource(Resource):
         action = request.args.get("action")
 
         if action == "register":
+            args = register_parse.parse_args()
+
             publisher = Publisher()
-            publisher.username = request.form.get("username")
-            publisher.password = request.form.get("password")
-            publisher.name = request.form.get("name")
-            publisher.identifier = request.form.get("identifier")
-            publisher.tel = request.form.get("name")
-            publisher.mail = request.form.get("mail")
-            publisher.address = request.form.get("name")
+            publisher.username = args.get("username")
+            publisher.password = args.get("password")
+            publisher.name = args.get("name")
+            identifier = args.get("identifier")
+            publisher.tel = args.get("name")
+            publisher.mail = args.get("mail")
+            publisher.address = args.get("name")
+
+            filepath = UPLOAD_DIR + identifier.filename
+
+            identifier.save(filepath)
+
+            publisher.identifier = filepath
 
             if not publisher.save():
                 abort(400, msg="fail to save publisher")
@@ -52,8 +69,9 @@ class publisherResource(Resource):
             return data
 
         elif action == "login":
-            username = request.form.get("username")
-            password = request.form.get("password")
+            args = parse.parse_args()
+            username = args.get("username")
+            password = args.get("password")
 
             publisher = Publisher.query.filter(Publisher.username == username).first()
 
@@ -66,7 +84,6 @@ class publisherResource(Resource):
             token = "publisher" + uuid.uuid4().hex
 
             cache.set(token, publisher.id, timeout=60 * 60 * 24 * 7)
-            id = cache.get(token)
 
             data = {
                 "status": 200,
