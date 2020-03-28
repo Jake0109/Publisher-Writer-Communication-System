@@ -286,9 +286,133 @@
 
 #### 添加标签
 
+- 说明
+
+> 添加一个标签
+>
+> 需要admin用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/admin/tags/
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明       |
+| -------- | ---- | -------- | ---------- |
+| name     | 是   | String   | 标签的名字 |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "tag successfully created",
+    "status": 201,
+    "data": {
+        "id": 2,
+        "name": "Information Technology"
+    }
+}
+```
+
 #### 删除标签
 
+- 说明
+
+> 添加一个标签
+>
+> 需要admin用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/admin/tag/\<int:tag_id>/
+
+- 请求方式
+
+> DELETE
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明             |
+| -------- | ---- | -------- | ---------------- |
+| token    | 是   | String   | admin用户的token |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "tag successfully deleted",
+    "status": 203
+}
+```
+
 #### 获取复数标签
+
+- 说明
+
+> 获取所有标签
+>
+> 需要admin用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/admin/tags/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+> 无
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "tags successfully got",
+    "status": 200,
+    "data": [
+        {
+            "id": 2,
+            "name": "Information Technology"
+        },
+        {
+            "id": 3,
+            "name": "Python"
+        },
+        {
+            "id": 4,
+            "name": "Golang"
+        }
+    ]
+}
+```
 
 ## 出版社模块
 
@@ -296,15 +420,275 @@
 
 #### 获取单个出版社信息
 
+- 说明
+
+> 获取单个出版社信息
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/publisher/\<int:publisher_id>/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数     | 必选 | 参数类型 | 说明             |
+| ------------ | ---- | -------- | ---------------- |
+| publisher_id | 是   | Integer  | 出版社的数据库ID |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 200,
+    "msg": "successfully get writer",
+    "data": {
+        "username": "Jake",
+        "name": "Jake Publisher",
+        "identifier": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/52500049_p0.jpg",
+        "tel": "Jake Publisher",
+        "address": "White House"
+    }
+}
+```
+
 #### 注册出版社
+
+- 说明
+
+> 注册出版社
+>
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/publisher/?action=register
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数   | 必选 | 参数类型 | 说明                      |
+| ---------- | ---- | -------- | ------------------------- |
+| username   | 是   | String   | 出版社的用户名            |
+| password   | 是   | String   | 密码                      |
+| name       | 是   | String   | 出版社名称                |
+| identifier | 是   | File     | 出版社的认证文件          |
+| tel        | 是   | String   | 出版社的联系电话          |
+| mail       | 是   | String   | 出版社的联系邮箱/投稿邮箱 |
+| address    | 是   | String   | 出版社地址                |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 200,
+    "msg": "successfully saved publisher",
+    "data": {
+        "username": "Jake",
+        "name": "Jake Publisher",
+        "identifier": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/52500049_p0.jpg",
+        "tel": "Jake Publisher",
+        "address": "White House"
+    }
+}
+```
 
 #### 出版社登录
 
+- 说明
+
+> 出版社用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/publisher/?action=login
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明           |
+| -------- | ---- | -------- | -------------- |
+| username | 是   | String   | 出版社的用户名 |
+| password | 是   | String   | 密码           |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 200,
+    "msg": "successfully login",
+    "token": "publisher722ad22a673a4ebf9cde1ee341529c20",
+    "data": {
+        "username": "Jake",
+        "name": "Jake Publisher",
+        "identifier": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/52500049_p0.jpg",
+        "tel": "Jake Publisher",
+        "address": "White House"
+    }
+}
+```
+
 #### 修改出版社信息
+
+- 说明
+
+> 出版社用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/publisher/?action=login
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数   | 必选 | 参数类型 | 说明             |
+| ---------- | ---- | -------- | ---------------- |
+| identifier | 否   | String   | 出版社的认证材料 |
+| tel        | 否   | String   | 出版社的联系电话 |
+| mail       | 否   | String   | 出版社的投稿邮箱 |
+| address    | 否   | String   | 出版社地址       |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "successfully patched",
+    "status": 200,
+    "data": {
+        "username": "Jake",
+        "name": "Jake Publisher",
+        "identifier": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/52500049_p0.jpg",
+        "tel": "Jake Publisher",
+        "address": "White House"
+    }
+}
+```
 
 #### 删除出版社
 
+- 说明
+
+> 出版社用户删除
+>
+> 需要admin用户的登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/publisher/\<int:publisher_id>/
+
+- 请求方式
+
+> DELETE
+
+- 请求参数
+
+> 无
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 203,
+    "msg": "publisher successfully deleted"
+}
+```
+
 #### 获取复数出版社信息
+
+- 说明
+
+> 获取复数个出版社的信息
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/publisher/
+
+- 请求方式
+
+> DELETE
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                         |
+| -------- | ---- | -------- | ---------------------------- |
+| tag_id   | 否   | String   | 需要查找相应出版社的标签的ID |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 200,
+    "msg": "publishers of certain tag successfully got",
+    "data": [
+        {
+            "username": "Jake",
+            "name": "Jake Publisher",
+            "identifier": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/52500049_p0.jpg",
+            "tel": "Jake Publisher",
+            "address": "White House"
+        },
+        {
+            "username": "Jim",
+            "name": "Jim Publisher",
+            "identifier": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "tel": "Jim Publisher",
+            "address": "White House"
+        }
+    ]
+}
+```
 
 ### 出版社-标签关系接口
 

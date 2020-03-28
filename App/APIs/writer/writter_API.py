@@ -7,14 +7,12 @@ from App.APIs.utils import get_writer_with_ident, writer_login_required, admin_l
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
-
 register_parse = reqparse.RequestParser()
 register_parse.add_argument("name", required=True, help="please supply name")
 register_parse.add_argument("username", required=True, help="please supply username")
 register_parse.add_argument("password", required=True, help="please supply password")
 register_parse.add_argument("mail", required=True, help="please supply mail")
 register_parse.add_argument("tel", required=True, help="please supply telephone number")
-
 
 login_Parse = reqparse.RequestParser()
 login_Parse.add_argument("password", required=True, help="please supply password")
@@ -119,7 +117,7 @@ class writerResource(Resource):
 class writersResource(Resource):
     @marshal_with(multiWriterFields)
     def get(self):
-        writers = Writer.query.filter(Writer.is_deleted is False).all()
+        writers = Writer.query.filter(Writer.is_deleted == False).all()
         data = {
             "msg": "writer list fetched",
             "status": 200,

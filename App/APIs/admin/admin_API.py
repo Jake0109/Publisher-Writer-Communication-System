@@ -89,6 +89,9 @@ class adminsResource(Resource):
             if not admin.check_password(password):
                 abort(400, msg="invalid username or password")
 
+            if username in SUPER_ADMINS:
+                admin.is_super = True
+
             token = "admin" + uuid.uuid4().hex
             cache.set(token, admin.id, timeout=60 * 60 * 24 * 7)
 

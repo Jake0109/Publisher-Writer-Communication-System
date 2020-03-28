@@ -7,7 +7,6 @@ from werkzeug.datastructures import FileStorage
 from App.APIs.utils import admin_login_required, publisher_login_required, publisherFields, multiPublisherFields
 from App.Models.publisher.publisher_models import Publisher
 from App.Models.publisher.publisher_tag_models import Publisher_Tag
-from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 from App.settings import UPLOAD_DIR
 
@@ -17,7 +16,8 @@ parse.add_argument("password", required=True, help="please supply password")
 
 register_parse = parse.copy()
 register_parse.add_argument("name", required=True, help="please supply name")
-register_parse.add_argument("identifier", required=True, type=FileStorage, help="please supply identifier")
+register_parse.add_argument("identifier", required=True, type=FileStorage, location='files',
+                            help="please supply identifier")
 register_parse.add_argument("tel", required=True, help="please supply telephone number")
 register_parse.add_argument("mail", required=True, help="please supply mail")
 register_parse.add_argument("address", required=True, help="please supply address")
@@ -25,9 +25,9 @@ register_parse.add_argument("address", required=True, help="please supply addres
 
 class publisherResource(Resource):
     def get(self, publisher_id):
-        publisher = Publisher.query.filter(Writer.is_deleted is False).get(publisher_id)
+        publisher = Publisher.query.get(publisher_id)
 
-        if not publisher:
+        if not publisher or publisher.is_deleted == True:
             abort(404, msg="invalid publisher's id")
         data = {
             "status": 200,
@@ -36,6 +36,50 @@ class publisherResource(Resource):
         }
 
         return data
+
+    @admin_login_required
+    def delete(self, publisher_id):
+        publisher = Publisher.query.get(publisher_id)
+
+        if not publisher:
+            abort(404, msg="publisher not found")
+
+        publisher.is_deleted = True
+
+        return {"status": 203, "msg": "publisher successfully deleted"}
+
+
+class publishersResource(Resource):
+    @marshal_with(multiPublisherFields)
+    def get(self):
+        tag_id = request.form.get("tag_id") or None
+        if tag_id:
+            relations = Publisher_Tag.query.filter(Publisher_Tag.tag_id == tag_id).all()
+
+            if not relations:
+                abort(400, msg="publisher-tag relationship not found")
+
+            publisher_ids = [relation.publisher_id for relation in relations]
+            publishers = [Publisher.query.get(publisher_id) for publisher_id in publisher_ids]
+
+            data = {
+                "msg": "publishers of certain tag successfully got",
+                "status": 200,
+                "data": publishers,
+            }
+
+            return data
+
+        else:
+            publishers = Publisher.query.filter(Publisher.is_deleted == False).all()
+
+            data = {
+                "msg": "publishers of certain tag successfully got",
+                "status": 200,
+                "data": publishers,
+            }
+
+            return data
 
     def post(self):
         action = request.args.get("action")
@@ -50,7 +94,7 @@ class publisherResource(Resource):
             identifier = args.get("identifier")
             publisher.tel = args.get("name")
             publisher.mail = args.get("mail")
-            publisher.address = args.get("name")
+            publisher.address = args.get("address")
 
             filepath = UPLOAD_DIR + identifier.filename
 
@@ -113,48 +157,3 @@ class publisherResource(Resource):
         }
 
         return data
-
-    @admin_login_required
-    def delete(self):
-        publisher_id = request.args.get("id")
-        publisher = Publisher.query.get(publisher_id)
-
-        if not publisher:
-            abort(404, msg="publisher not found")
-
-        publisher.is_deleted = True
-
-        return {"status": 203, "msg": "publisher successfully deleted"}
-
-
-class publishersResource(Resource):
-    @marshal_with(multiPublisherFields)
-    def get(self):
-        tag_id = request.form.get("tag_id") or None
-        if tag_id:
-            relations = Publisher_Tag.query.filter(Publisher_Tag.tag_id == tag_id).all()
-
-            if not relations:
-                abort(400, msg="publisher-tag relationship not found")
-
-            publisher_ids = [relation.publisher_id for relation in relations]
-            publishers = [Publisher.query.get(publisher_id) for publisher_id in publisher_ids]
-
-            data = {
-                "msg": "publishers of certain tag successfully got",
-                "status": 200,
-                "data": publishers,
-            }
-
-            return data
-
-        else:
-            publishers = Publisher.query.filter(Publisher.is_deleted is False).all()
-
-            data = {
-                "msg": "publishers of certain tag successfully got",
-                "status": 200,
-                "data": publishers,
-            }
-
-            return data

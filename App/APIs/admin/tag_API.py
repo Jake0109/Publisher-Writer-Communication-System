@@ -8,24 +8,8 @@ from App.Models.publisher.publisher_tag_models import Publisher_Tag
 parse = reqparse.RequestParser()
 parse.add_argument("name", required=True, help="please supply name")
 
+
 class tagResource(Resource):
-    @admin_login_required
-    def post(self):
-        tag = Tag()
-        args = parse.parse_args()
-
-        tag.name = args.get("name")
-
-        if not tag.save():
-            abort(400, msg="fail to save tag")
-
-        data = {
-            "msg": "tag successfully created",
-            "status": 201,
-            "data": marshal(tag, tagFields)
-        }
-
-        return data
 
     @admin_login_required
     def delete(self, tag_id):
@@ -68,3 +52,21 @@ class tagsResource(Resource):
             }
 
             return data
+
+    @admin_login_required
+    def post(self):
+        tag = Tag()
+        args = parse.parse_args()
+
+        tag.name = args.get("name")
+
+        if not tag.save():
+            abort(400, msg="fail to save tag")
+
+        data = {
+            "msg": "tag successfully created",
+            "status": 201,
+            "data": marshal(tag, tagFields)
+        }
+
+        return data
