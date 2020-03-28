@@ -5,12 +5,6 @@ from App.APIs.utils import publisher_login_required, contractFields, multiContra
 from App.Models.admin.contract_models import Contract
 from App.settings import UPLOAD_DIR
 
-"""        
-        contract.name = request.form.get("name")
-        contract.publisher_id = g.publisher.id
-        contract.writer_id = request.form.get("writer_id")
-        # contract.contract_file = request.file.get("contract_file")
-"""
 parse = reqparse.RequestParser()
 parse.add_argument("name", required=True, help="please supply name")
 parse.add_argument("writer_id", required=True, help="please supply writer_id")

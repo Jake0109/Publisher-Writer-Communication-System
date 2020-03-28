@@ -12,9 +12,9 @@ parse = reqparse.RequestParser()
 parse.add_argument("username", required=True, help="please supply username")
 parse.add_argument("password", required=True, help="please supply password")
 
+
 class adminResource(Resource):
-    def get(self):
-        admin_id = request.args.get("id")
+    def get(self, admin_id):
         admin = Admin.query.get(admin_id)
 
         if not admin:
@@ -28,6 +28,32 @@ class adminResource(Resource):
 
         return data
 
+    @super_admin_required
+    def delete(self, admin_id):
+        admin = Admin.query.get(admin_id)
+
+        if not admin:
+            abort(404, msg="admin not found")
+
+        admin.is_deleted = True
+
+        return {"msg": "successfully deleted", "status": 200}
+
+
+class adminsResource(Resource):
+    @super_admin_required
+    @marshal_with(multiAdminFields)
+    def get(self):
+        admins = Admin.query.all()
+
+        data = {
+            "msg": "admins successfully get",
+            "status": 200,
+            "data": admins
+        }
+
+        return data
+
     def post(self):
         action = request.args.get("action")
         args = parse.parse_args()
@@ -37,6 +63,9 @@ class adminResource(Resource):
 
             admin.username = args.get("username")
             admin.password = args.get("password")
+
+            if admin.username in SUPER_ADMINS:
+                admin.is_super = True
 
             if not admin.save():
                 abort(400, msg="fail to save admin")
@@ -60,9 +89,6 @@ class adminResource(Resource):
             if not admin.check_password(password):
                 abort(400, msg="invalid username or password")
 
-            if username in SUPER_ADMINS:
-                admin.is_super = True
-
             token = "admin" + uuid.uuid4().hex
             cache.set(token, admin.id, timeout=60 * 60 * 24 * 7)
 
@@ -79,8 +105,7 @@ class adminResource(Resource):
     def patch(self):
         admin = g.admin
 
-        args = parse.parse_args()
-        password = args.get("password")
+        password = request.form.get("password")
 
         admin.password = password
 
@@ -91,32 +116,6 @@ class adminResource(Resource):
             "msg": "successfully changed",
             "status": 200,
             "data": marshal(admin, adminFields)
-        }
-
-        return data
-
-    @super_admin_required
-    def delete(self):
-        admin_id = request.args.get("id")
-        admin = Admin.query.get(admin_id)
-
-        if not admin:
-            abort(404, msg="admin not found")
-
-        admin.is_deleted = True
-
-        return {"msg": "successfully deleted", "status": 200}
-
-class AdminsResource(Resource):
-    @super_admin_required
-    @marshal_with(multiAdminFields)
-    def get(self):
-        admins = Admin.query.all()
-
-        data = {
-            "msg": "admins successfully get",
-            "status": 200,
-            "data": admins
         }
 
         return data

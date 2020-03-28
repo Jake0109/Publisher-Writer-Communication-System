@@ -21,6 +21,8 @@ class baseConfig:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    CACHE_DEFAULT_TIMEOUT = 60*60*24*7
+
 
 class developConfig(baseConfig):
     DEBUG = True
@@ -58,5 +60,3 @@ BASE_DIR = os.path.dirname(__file__)
 SUPER_ADMINS = ["admin", "jake"]
 
 UPLOAD_DIR = os.path.join(BASE_DIR, "static/uploads/")
-
-print(UPLOAD_DIR)

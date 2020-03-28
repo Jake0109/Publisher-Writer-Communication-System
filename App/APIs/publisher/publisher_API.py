@@ -22,6 +22,7 @@ register_parse.add_argument("tel", required=True, help="please supply telephone 
 register_parse.add_argument("mail", required=True, help="please supply mail")
 register_parse.add_argument("address", required=True, help="please supply address")
 
+
 class publisherResource(Resource):
     def get(self, publisher_id):
         publisher = Publisher.query.filter(Writer.is_deleted is False).get(publisher_id)

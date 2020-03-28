@@ -81,7 +81,7 @@ def admin_login_required(func):
             abort(400, msg="not login")
 
         admin_id = cache.get(token)
-        if not admin_id or not token.startwith("admin"):
+        if not admin_id or not token.startswith("admin"):
             abort(400, msg="invalid token")
 
         g.admin = Admin.query.get(admin_id)

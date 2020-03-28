@@ -7,12 +7,6 @@ from App.APIs.utils import get_writer_with_ident, writer_login_required, admin_l
 from App.Models.writer.writer_models import Writer
 from App.extensions import cache
 
-"""         writer.name = request.form.get("name")
-            writer.username = request.form.get("username")
-            writer.password = request.form.get("password")
-            writer.mail = request.form.get("mail")
-            writer.tel = request.form.get("tel")
-            """
 
 register_parse = reqparse.RequestParser()
 register_parse.add_argument("name", required=True, help="please supply name")
