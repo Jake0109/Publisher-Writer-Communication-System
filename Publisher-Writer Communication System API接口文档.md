@@ -1,5 +1,7 @@
 # Publisher-Writer Communication System API接口文档
 
+[toc]
+
 ## 通用说明：
 
 ### 接口环境
@@ -10,9 +12,9 @@
 
 ### 接口通用返回
 
-```
+```json
 {
-    "status": 200, 	// 正确码为2XX,错误码为4XX,5XX 
+    "status": 200, 	// HTTP状态码，正确码为2XX,错误码为4XX,5XX 
     "msg": "", 		// 正确返回和错误返回的信息
     "data":{		// 正确返回时的数据   
     }
@@ -606,7 +608,7 @@
 
 - 说明
 
-> 出版社用户删除
+> 出版社用户逻辑删除，即将该出版社用户的is_deleted 参数设为True
 >
 > 需要admin用户的登录
 
@@ -694,7 +696,83 @@
 
 #### 添加出版社-标签关系
 
+- 说明
+
+> 为本出版社增加一个需求标签
+>
+> 需要出版社用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/pub_tag_relation/
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                   |
+| -------- | ---- | -------- | ---------------------- |
+| tag_id   | 是   | String   | 需要添加的标签的tag_id |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "publisher-tag relationship successfully created",
+    "status": 200,
+    "data": {
+        "publisher_id": 1,
+        "tag_id": 1
+    }
+}
+```
+
 #### 删除出版社-标签关系
+
+- 说明
+
+> 为本出版社删除一个需求标签
+>
+> 需要出版社用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/pub_tag_relation/
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数    | 必选 | 参数类型 | 说明                   |
+| ----------- | ---- | -------- | ---------------------- |
+| relation_id | 是   | String   | 需要添加的标签的tag_id |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "publisher-tag relationship successfully deleted",
+    "status": 200
+}
+```
 
 ### 合同接口
 
@@ -714,15 +792,274 @@
 
 #### 获取单个作家信息
 
+- 说明
+
+> 获取单个作家信息
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/writer/\<int:writer_id>/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数  | 必选 | 参数类型 | 说明            |
+| --------- | ---- | -------- | --------------- |
+| writer_id | 是   | Integer  | 作家的writer_id |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 200,
+    "msg": "successfully get",
+    "data": {
+        "username": "Jake",
+        "name": "Jake",
+        "tel": "110",
+        "mail": "jake@xxx.com"
+    }
+}
+```
+
 #### 作家注册
+
+- 说明
+
+> 作家用户注册
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/writers/?action=register
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明           |
+| -------- | ---- | -------- | -------------- |
+| username | 是   | String   | 出版社的用户名 |
+| password | 是   | String   | 密码           |
+| name     | 是   | String   | 用户姓名       |
+| tel      | 是   | String   | 联系电话       |
+| mail     | 是   | String   | 联系邮箱       |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "successfully post",
+    "status": 201,
+    "data": {
+        "username": "Jake",
+        "name": "Jake",
+        "tel": "110",
+        "mail": "jake@xxx.com"
+    }
+}
+```
 
 #### 作家登录
 
+- 说明
+
+> 作家用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/writers/?action=login
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                       |
+| -------- | ---- | -------- | -------------------------- |
+| ident    | 是   | String   | 用户名/注册手机号/注册邮箱 |
+| password | 是   | String   | 密码                       |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "successfully login",
+    "status": 200,
+    "data": {
+        "username": "Jake",
+        "name": "Jake",
+        "tel": "110",
+        "mail": "jake@xxx.com"
+    },
+    "token": "writer4fb0f37849664d5ab16b3c1aa30d783b"
+}
+```
+
 #### 修改作家信息
+
+- 说明
+
+> 修改作家信息
+>
+> 需作家用户登录，且只能修改自己的信息
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/writers/
+
+- 请求方式
+
+> PATCH
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                        |
+| -------- | ---- | -------- | --------------------------- |
+| token    | 是   | String   | 作家用户的token，登陆时生成 |
+| mail     | 否   | String   | 修改的邮箱                  |
+| tel      | 否   | String   | 修改的手机号                |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "successfully patched",
+    "status": 200,
+    "data": {
+        "username": "Jake",
+        "name": "Jake",
+        "tel": "110",
+        "mail": "jake@shanbay.com"
+    }
+}
+```
 
 #### 删除作家
 
+- 说明
+
+> 作家用户逻辑删除
+>
+> 需要管理员用户权限
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/writer/\<int:writer_id>/
+
+- 请求方式
+
+> DELETE
+
+- 请求参数
+
+| 请求参数  | 必选 | 参数类型 | 说明                          |
+| --------- | ---- | -------- | ----------------------------- |
+| token     | 是   | String   | 管理员用户的token，登陆时生成 |
+| writer_id | 是   | Integer  | 需要删除的作家的writer_id     |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 203,
+    "msg": "writer successfully deleted"
+}
+```
+
 #### 获取所有作家信息
+
+- 说明
+
+> 获取所有的作家的信息
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/writers/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+> 无
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "status": 200,
+    "msg": "writer list fetched",
+    "data": [
+        {
+            "username": "Jake",
+            "name": "Jake",
+            "tel": "110",
+            "mail": "jake@xxx.com"
+        },
+        {
+            "username": "jim",
+            "name": "Jim",
+            "tel": "911",
+            "mail": "jim@xxx.com"
+        },
+        {
+            "username": "yuchen",
+            "name": "Yuchen",
+            "tel": "120",
+            "mail": "yuchen@xxx.com"
+        }
+    ]
+}
+```
 
 ### 合同接口
 

@@ -13,7 +13,7 @@ publisher_api.add_resource(publishersResource, '/publishers/')
 publisher_api.add_resource(topicResource, '/topic/<int:topic_id>/')
 publisher_api.add_resource(topicsResource, '/topics/')
 
-publisher_api.add_resource(pubTagRelationResource, '/pub_tag_relation/<int:relation_id>/')
+publisher_api.add_resource(pubTagRelationResource, '/pub_tag_relation/')
 
 publisher_api.add_resource(PubContractResource, '/contract/<int:contract_id>/')
 publisher_api.add_resource(PubContractsResource, '/contracts/')

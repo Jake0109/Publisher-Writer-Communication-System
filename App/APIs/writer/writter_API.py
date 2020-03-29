@@ -34,6 +34,33 @@ class writerResource(Resource):
 
         return data
 
+    @admin_login_required
+    def delete(self, writer_id):
+        writer = Writer.query.get(writer_id)
+
+        if not writer or writer.is_deleted is True:
+            abort(404, msg="writer not found")
+
+        writer.is_deleted = True
+
+        if not writer.save():
+            abort(400, msg="fail to delete writer")
+
+        return {"status": 203, "msg": "writer successfully deleted"}
+
+
+class writersResource(Resource):
+    @marshal_with(multiWriterFields)
+    def get(self):
+        writers = Writer.query.filter(Writer.is_deleted == False).all()
+        data = {
+            "msg": "writer list fetched",
+            "status": 200,
+            "data": writers
+        }
+
+        return data
+
     def post(self):
 
         action = request.args.get("action")
@@ -85,7 +112,7 @@ class writerResource(Resource):
 
             return data
 
-    @writer_login_required
+    @admin_login_required
     def patch(self):
         writer = g.writer
         writer.mail = request.form.get("mail") or writer.mail
@@ -98,30 +125,6 @@ class writerResource(Resource):
             "msg": "successfully patched",
             "status": 200,
             "data": marshal(writer, writerFields)
-        }
-
-        return data
-
-    @admin_login_required
-    def delete(self, writer_id):
-        writer = Writer.query.get(writer_id)
-
-        if not writer:
-            abort(404, msg="writer not found")
-
-        writer.is_deleted = True
-
-        return {"status": 203, "msg": "writer successfully deleted"}
-
-
-class writersResource(Resource):
-    @marshal_with(multiWriterFields)
-    def get(self):
-        writers = Writer.query.filter(Writer.is_deleted == False).all()
-        data = {
-            "msg": "writer list fetched",
-            "status": 200,
-            "data": writers
         }
 
         return data

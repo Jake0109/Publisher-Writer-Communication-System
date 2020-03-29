@@ -1,4 +1,4 @@
-from flask import g
+from flask import g, request
 from flask_restful import Resource, abort, marshal, reqparse
 
 from App.APIs.utils import publisher_login_required, relationFields
@@ -29,7 +29,8 @@ class pubTagRelationResource(Resource):
         return data
 
     @publisher_login_required
-    def delete(self, relation_id):
+    def delete(self):
+        relation_id = request.form.get("relation_id")
         relation = Publisher_Tag.query.get(relation_id)
 
         if not relation:

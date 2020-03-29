@@ -52,7 +52,7 @@ class publisherResource(Resource):
 class publishersResource(Resource):
     @marshal_with(multiPublisherFields)
     def get(self):
-        tag_id = request.form.get("tag_id") or None
+        tag_id = request.args.get("tag_id") or None
         if tag_id:
             relations = Publisher_Tag.query.filter(Publisher_Tag.tag_id == tag_id).all()
 
