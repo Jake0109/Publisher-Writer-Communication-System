@@ -13,3 +13,4 @@ class Contract(baseModel):
     contract_file = db.Column(db.String(256), nullable=False)
     is_signed = db.Column(db.Boolean, default=False)
     is_completed = db.Column(db.Boolean, default=False)
+    # is_deleted = db.Column(db.Boolean, default=False)

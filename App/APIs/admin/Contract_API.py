@@ -20,6 +20,17 @@ class contractResource(Resource):
 
         return data
 
+    @admin_login_required
+    def delete(self, contract_id):
+        contract = Contract.query.get(contract_id)
+
+        if not contract:
+            abort(404, msg="contract not found")
+
+        contract.delete()
+
+        return {"msg": "contract successfully deleted", "status": 200}
+
 
 class contractsResource(Resource):
     @admin_login_required

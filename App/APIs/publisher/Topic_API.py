@@ -1,7 +1,7 @@
 from flask import request, g
 from flask_restful import Resource, marshal, abort, marshal_with, reqparse
 
-from App.APIs.utils import admin_login_required, publisher_login_required, topicField, multiTopicFields
+from App.APIs.utils import publisher_login_required, topicField, multiTopicFields
 from App.Models.publisher.topic_models import Topic
 
 parse = reqparse.RequestParser()
@@ -13,8 +13,11 @@ class topicResource(Resource):
     def get(self, topic_id):
         topic = Topic.query.get(topic_id)
 
+        if not topic or topic.is_deleted is True:
+            abort(404, msg="topic not found")
+
         data = {
-            "msg": "seccessfully get",
+            "msg": "topic successfully get",
             "status": 200,
             "data": marshal(topic, topicField)
         }
@@ -22,23 +25,26 @@ class topicResource(Resource):
         return data
 
     @publisher_login_required
-    def post(self):
-        topic = Topic()
-        topic.publisher_id = g.publisher.id
-        args = parse.parse_args()
+    def patch(self, topic_id):
 
-        topic.writer_id = args.get("writer_id")
-        topic.name = args.get("name")
+        topic = Topic.query.get(topic_id)
+
+        if not topic or topic.is_deleted is True:
+            abort(404, msg="topic not found")
+
+        topic.is_approved = True
 
         if not topic.save():
             abort(400, msg="fail to save topic")
 
-        data = {
-            "msg": "topic successfully created",
-            "status": 201,
-            "data": marshal(topic, topicField),
-        }
+        if topic.publisher_id != g.publisher.id:
+            abort(403, msg="forbidden")
 
+        data = {
+            "msg": "topic status successfully changed",
+            "status": 200,
+            "data": marshal(topic, topicField)
+        }
         return data
 
     @publisher_login_required
@@ -75,3 +81,24 @@ class topicsResource(Resource):
         }
 
         return data
+
+    @publisher_login_required
+    def post(self):
+        topic = Topic()
+        topic.publisher_id = g.publisher.id
+        args = parse.parse_args()
+
+        topic.writer_id = args.get("writer_id")
+        topic.name = args.get("name")
+
+        if not topic.save():
+            abort(400, msg="fail to save topic")
+
+        data = {
+            "msg": "topic successfully created",
+            "status": 201,
+            "data": marshal(topic, topicField),
+        }
+
+        return data
+

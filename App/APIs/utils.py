@@ -180,7 +180,6 @@ topicField = {
     "writer_id": fields.Integer,
     "publisher_id": fields.Integer,
     "is_approved": fields.Boolean,
-    "is_completed": fields.Boolean,
 }
 
 multiTopicFields = {

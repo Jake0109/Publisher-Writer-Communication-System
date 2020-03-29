@@ -282,7 +282,155 @@
 
 #### 获取单个合同信息
 
+- 说明
+
+> 获取单个合同信息
+>
+> 需要admin用户登录
+>
+> 测试账号：admin=jake
+
+- 请求URL
+
+> 127.0.0.1:5000/admin/contract/\<int:contract_id>/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数    | 必选 | 参数类型 | 说明                           |
+| ----------- | ---- | -------- | ------------------------------ |
+| token       | 是   | String   | admin用户的token，登陆时获取。 |
+| contract_id | 是   | Integer  | 请求的contract的ID             |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contract successfully got.",
+    "status": 200,
+    "data": {
+        "name": "jake-jake-contract",
+        "publisher_id": 1,
+        "writer_id": 1,
+        "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+        "is_signed": true,
+        "is_completed": false
+    }
+}
+```
+
 #### 获取所有合同信息
+
+- 说明
+
+> 获取所有合同信息
+>
+> 需要admin用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/admin/contracts/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                         |
+| -------- | ---- | -------- | ---------------------------- |
+| token    | 是   | String   | admin用户token，在登陆时获得 |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contracts successfully got.",
+    "status": 200,
+    "data": [
+        {
+            "name": "jake-jake-contract",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": true,
+            "is_completed": false
+        },
+        {
+            "name": "jake-jake-contract1",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        },
+        {
+            "name": "jake-jim-contract2",
+            "publisher_id": 1,
+            "writer_id": 2,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        }
+    ]
+}
+```
+
+#### 删除合同
+
+- 说明
+
+> 删除合同
+>
+> 需要admin用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/admin/admin/\<int:contract_id>
+
+- 请求方式
+
+> DELETE
+
+- 请求参数
+
+| 请求参数    | 必选 | 参数类型 | 说明                      |
+| ----------- | ---- | -------- | ------------------------- |
+| token       | 是   | String   | 验证是否是Super admin用户 |
+| contract_id | 是   | String   | 删除的contract的ID        |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contract successfully deleted",
+    "status": 200
+}
+```
 
 ### 标签接口
 
@@ -774,17 +922,449 @@
 }
 ```
 
+### 选题接口
+
+#### 获取单个选题
+
+- 说明
+
+> 获取单个选题信息
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/topic/\<int:topic_id>
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                 |
+| -------- | ---- | -------- | -------------------- |
+| topic_id | 是   | Integer  | 查询的选题的topic_id |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "seccessfully get",
+    "status": 200,
+    "data": {
+        "name": "Jake-jake",
+        "writer_id": 1,
+        "publisher_id": 1,
+        "is_approved": false,
+        "is_completed": false
+    }
+}
+```
+
+#### 删除单个选题
+
+- 说明
+
+> 获取单个选题信息
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/topic/\<int:topic_id>
+
+- 请求方式
+
+> DELETE
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                 |
+| -------- | ---- | -------- | -------------------- |
+| topic_id | 是   | Integer  | 删除的选题的topic_id |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "topic successfully deleted",
+    "status": 200
+}
+```
+
+#### 添加选题
+
+- 说明
+
+> 获取单个选题信息
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/topics/
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数  | 必选 | 参数类型 | 说明                |
+| --------- | ---- | -------- | ------------------- |
+| writer_id | 是   | Integert | 投稿作者的writer_id |
+| name      | 是   | String   | 选题的名字          |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "topic successfully created",
+    "status": 201,
+    "data": {
+        "name": "Jake-jake",
+        "writer_id": 1,
+        "publisher_id": 1,
+        "is_approved": false,
+        "is_completed": false
+    }
+}
+```
+
+#### 获取多个选题
+
+- 说明
+
+> 获取多个选题信息
+>
+> 传递 writer_id 则查询作家申请过的所有选题信息
+>
+> 如果不传递 writer_id 则是查询所有选题信息
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/topics/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数  | 必选 | 参数类型 | 说明            |
+| --------- | ---- | -------- | --------------- |
+| writer_id | 否   | Integert | 作者的writer_id |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "successfully get",
+    "status": 200,
+    "data": [
+        {
+            "name": "Jake-jake",
+            "writer_id": 1,
+            "publisher_id": 1,
+            "is_approved": false
+        },
+        {
+            "name": "Jake-jake3",
+            "writer_id": 1,
+            "publisher_id": 1,
+            "is_approved": false
+        },
+        {
+            "name": "Jake-jim4",
+            "writer_id": 2,
+            "publisher_id": 1,
+            "is_approved": false
+        }
+    ]
+}
+```
+
+#### 更改选题状态
+
+- 说明
+
+> 更改选题信息
+>
+> 只是在选题申请通过以后用于更改选题的状态。
+>
+> 
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/topic/\<int:topic_id>
+
+- 请求方式
+
+> PATCH
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                             |
+| -------- | ---- | -------- | -------------------------------- |
+| token    | 是   | String   | publisher的token，登录的时候获取 |
+| topic_id | 是   | Integer  | 更改的topic_id                   |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "topic status successfully changed",
+    "status": 200,
+    "data": {
+        "name": "Jake-jake",
+        "writer_id": 1,
+        "publisher_id": 1,
+        "is_approved": true
+    }
+}
+```
+
 ### 合同接口
 
 #### 获取单个合同信息
 
-#### 上传合同信息
+- 说明
+
+> 获取单个合同信息
+>
+> 需要publisher用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/contract/\<int:contract_id>
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数    | 必选 | 参数类型 | 说明                           |
+| ----------- | ---- | -------- | ------------------------------ |
+| token       | 是   | String   | publisher的token，在登陆时获取 |
+| contract_id | 是   | Integer  | 查找的合同的ID                 |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contract successfully got",
+    "status": 200,
+    "data": {
+        "name": "jake-jake-contract",
+        "publisher_id": 1,
+        "writer_id": 1,
+        "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+        "is_signed": false,
+        "is_completed": false
+    }
+}
+```
+
+#### 创建合同
+
+- 说明
+
+> 创建新的合同
+>
+> 需要publisher用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/contracts/
+
+- 请求方式
+
+> POST
+
+- 请求参数
+
+| 请求参数      | 必选 | 参数类型 | 说明                        |
+| ------------- | ---- | -------- | --------------------------- |
+| token         | 是   | String   | 出版商的token，在登陆时获取 |
+| name          | 是   | Integer  | 合同的名字                  |
+| writer_id     | 是   | Integer  | 签订合同的作家ID            |
+| contract_file | 是   | File     | 合同文件                    |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contract successfully created",
+    "status": 201,
+    "data": {
+        "name": "jake-jake-contract",
+        "publisher_id": 1,
+        "writer_id": 1,
+        "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+        "is_signed": false,
+        "is_completed": false
+    }
+}
+
+```
 
 #### 更改合同状态
 
-#### 删除合同
+- 说明
+
+> 更改**自己的**合同状态
+>
+> 需要publisher用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/contract/\<int:contract_id>
+
+- 请求方式
+
+> PATCH
+
+- 请求参数
+
+| 请求参数      | 必选 | 参数类型 | 说明                        |
+| ------------- | ---- | -------- | --------------------------- |
+| token         | 是   | String   | 出版商的token，在登陆时获取 |
+| name          | 是   | Integer  | 合同的名字                  |
+| writer_id     | 是   | Integer  | 签订合同的作家ID            |
+| contract_file | 是   | File     | 合同文件                    |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contract already completed",
+    "status": 200,
+    "data": {
+        "name": "jake-jake-contract",
+        "publisher_id": 1,
+        "writer_id": 1,
+        "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+        "is_signed": true,
+        "is_completed": true
+    }
+}
+```
 
 #### 获取出版社所有合同信息
+
+- 说明
+
+> 获取本出版社的所有合同信息
+>
+> 需要publisher用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/publisher/contracts/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                        |
+| -------- | ---- | -------- | --------------------------- |
+| token    | 是   | String   | 出版商的token，在登陆时获取 |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contracts of certain publisher successfully got.",
+    "status": 200,
+    "data": [
+        {
+            "name": "jake-jake-contract",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        },
+        {
+            "name": "jake-jake-contract1",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        },
+        {
+            "name": "jake-jim-contract2",
+            "publisher_id": 1,
+            "writer_id": 2,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        }
+    ]
+}
+```
 
 ## 作家模块
 
@@ -1065,6 +1645,168 @@
 
 #### 获取单个合同信息
 
+- 说明
+
+> writer用户查看单个合同信息
+>
+> 需要writer用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/contract/\<int:contract_id>
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数    | 必选 | 参数类型 | 说明                      |
+| ----------- | ---- | -------- | ------------------------- |
+| token       | 是   | String   | 作家的token，在登陆时获取 |
+| contract_id | 是   | Interger | 查看的合同的ID            |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contract successfully got.",
+    "status": 200,
+    "data": {
+        "name": "jake-jake-contract",
+        "publisher_id": 1,
+        "writer_id": 1,
+        "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+        "is_signed": true,
+        "is_completed": false
+    }
+}
+```
+
 #### 修改合同状态
 
+- 说明
+
+> writer用户修改合同信息
+>
+> 只能在签字以后使用
+>
+> 需要writer用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/contract/\<int:contract_id>
+
+- 请求方式
+
+> PATCH
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                      |
+| -------- | ---- | -------- | ------------------------- |
+| token    | 是   | String   | 作家的token，在登陆时获取 |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contract successfully changed.",
+    "status": 200,
+    "data": {
+        "name": "jake-jake-contract",
+        "publisher_id": 1,
+        "writer_id": 1,
+        "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+        "is_signed": true,
+        "is_completed": false
+    }
+}
+```
+
 #### 获取作家所有合同信息
+
+- 说明
+
+> writer用户的所有合同信息
+>
+> 需要writer用户登录
+
+- 请求URL
+
+> 127.0.0.1:5000/writer/contracts/
+
+- 请求方式
+
+> GET
+
+- 请求参数
+
+| 请求参数 | 必选 | 参数类型 | 说明                      |
+| -------- | ---- | -------- | ------------------------- |
+| token    | 是   | String   | 作家的token，在登陆时获取 |
+
+- 返回字段
+
+| 返回字段 | 字段类型 | 说明           |
+| -------- | -------- | -------------- |
+| status   | Integer  | http状态码     |
+| msg      | String   | 返回的状态信息 |
+
+- 返回示例
+
+```json
+{
+    "msg": "contracts of certain writer successfully got.",
+    "status": 200,
+    "data": [
+        {
+            "name": "jake-jake-contract",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": true,
+            "is_completed": false
+        },
+        {
+            "name": "jake-jake-contract1",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        },
+        {
+            "name": "jake-jake-contract2",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        },
+        {
+            "name": "jake-jake-contract3",
+            "publisher_id": 1,
+            "writer_id": 1,
+            "contract_file": "D:\\Publisher-Writer-Communication-System\\App\\static/uploads/42655195_p0.jpg",
+            "is_signed": false,
+            "is_completed": false
+        }
+    ]
+}
+```
+

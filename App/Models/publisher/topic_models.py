@@ -13,4 +13,3 @@ class Topic(baseModel):
     date = db.Column(db.DateTime)
     is_deleted = db.Column(db.Boolean, default=False)
     is_approved = db.Column(db.Boolean, default=False)
-    is_completed = db.Column(db.Boolean, default=False)

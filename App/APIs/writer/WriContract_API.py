@@ -13,7 +13,7 @@ class WriContractResource(Resource):
         if not contract:
             abort(404, msg="contract not found.")
 
-        if contract.id != g.wriiter.id:
+        if contract.id != g.writer.id:
             abort(403, msg="permission refused.")
 
         data = {
@@ -31,7 +31,7 @@ class WriContractResource(Resource):
         if not contract:
             abort(404, msg="contract not found.")
 
-        if contract.id != g.wriiter.id:
+        if contract.writer_id != g.writer.id:
             abort(403, msg="permission refused.")
 
         contract.is_signed = True
